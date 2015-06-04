@@ -1,4 +1,4 @@
-relola_hub = angular.module('relolaHub', ['ui.router', 'templates'])
+relola_hub = angular.module('relolaHub', ['ui.router', 'templates', 'Devise'])
     .config([
         '$stateProvider',
         '$urlRouterProvider',
@@ -24,6 +24,28 @@ relola_hub = angular.module('relolaHub', ['ui.router', 'templates'])
                             return posts.get($stateParams.id);
                         }]
                     }
+                })
+                .state('login', {
+                    url: '/login',
+                    templateUrl: 'auth/_login.html',
+                    controller: 'AuthCtrl',
+                    controller: 'AuthCtrl',
+                    onEnter: ['$state', 'Auth', function($state, Auth) {
+                        Auth.currentUser().then(function (){
+                            $state.go('home');
+                        })
+                    }]
+                })
+                .state('register', {
+                    url: '/register',
+                    templateUrl: 'auth/_register.html',
+                    controller: 'AuthCtrl',
+                    controller: 'AuthCtrl',
+                    onEnter: ['$state', 'Auth', function($state, Auth) {
+                        Auth.currentUser().then(function (){
+                            $state.go('home');
+                        })
+                    }]
                 });
 
             $urlRouterProvider.otherwise('home');
