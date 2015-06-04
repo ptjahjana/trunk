@@ -1,4 +1,4 @@
-relola_hub = angular.module('relolaHub', ['ui.router', 'templates', 'Devise'])
+relola_hub = angular.module('relolaHub', ['ui.router', 'templates', 'Devise', 'ui.bootstrap'])
     .config([
         '$stateProvider',
         '$urlRouterProvider',
@@ -16,37 +16,26 @@ relola_hub = angular.module('relolaHub', ['ui.router', 'templates', 'Devise'])
                     }
                 })
                 .state('posts', {
-                    url: '/posts/{id}',
+                    url: '/posts/{keyword}',
                     templateUrl: 'posts/_posts.html',
+                    controller: 'PostsCtrl',
+                    resolve: {
+                        post: ['$stateParams', 'posts', function($stateParams, posts) {
+                            return posts.search($stateParams.keyword);
+                        }]
+                    }
+                })
+                .state('post', {
+                    url: '/post/{id}',
+                    templateUrl: 'posts/_post.html',
                     controller: 'PostsCtrl',
                     resolve: {
                         post: ['$stateParams', 'posts', function($stateParams, posts) {
                             return posts.get($stateParams.id);
                         }]
                     }
-                })
-                .state('login', {
-                    url: '/login',
-                    templateUrl: 'auth/_login.html',
-                    controller: 'AuthCtrl',
-                    controller: 'AuthCtrl',
-                    onEnter: ['$state', 'Auth', function($state, Auth) {
-                        Auth.currentUser().then(function (){
-                            $state.go('home');
-                        })
-                    }]
-                })
-                .state('register', {
-                    url: '/register',
-                    templateUrl: 'auth/_register.html',
-                    controller: 'AuthCtrl',
-                    controller: 'AuthCtrl',
-                    onEnter: ['$state', 'Auth', function($state, Auth) {
-                        Auth.currentUser().then(function (){
-                            $state.go('home');
-                        })
-                    }]
                 });
+
 
             $urlRouterProvider.otherwise('home');
         }]);

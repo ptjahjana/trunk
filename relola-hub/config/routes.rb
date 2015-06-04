@@ -11,6 +11,7 @@ Rails.application.routes.draw do
 
     member do
       put '/upvote' => 'posts#upvote'
+      get '/search' => 'posts#search'
     end
   end
 

@@ -13,6 +13,11 @@ relola_hub
                     o.posts.push(data);
                 });
             };
+            o.search = function(keyword) {
+                return $http.get('/posts/' + keyword + '/search.json').success(function(data){
+                    angular.copy(data, o.posts);
+                });
+            };
             o.upvote = function(post) {
                 return $http.put('/posts/' + post.id + '/upvote.json')
                     .success(function(data){
